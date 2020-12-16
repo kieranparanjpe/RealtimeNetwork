@@ -13,8 +13,15 @@ public abstract class GameObject {
 
     public String id;
 
+    protected MainSuper sketch;
+
     protected void Init()
     {
         id = UUID.randomUUID().toString();
+    }
+
+    public void Update()
+    {
+
     }
 }

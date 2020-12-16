@@ -1,4 +1,5 @@
 
+import com.sun.tools.javac.Main;
 import processing.core.*;
 import processing.net.*;
 import java.lang.reflect.*;
@@ -7,19 +8,14 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.*;
 
-
-public class ClientMain extends PApplet {
+public class ClientMain extends MainSuper {
 
     public ArrayList<RTCFunction> commands = new ArrayList<RTCFunction>();
 
-    public Player player;
-    Client myClient;
-    Input myInput = new Input();
+    private Client myClient;
+    public Input myInput = new Input();
 
-    public String dataOut = "";
-
-    ObjectMapper objectMapper = new ObjectMapper();
-    Player p = new Player();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
 
     public static void main(String args[]) {
@@ -34,15 +30,12 @@ public class ClientMain extends PApplet {
     public void setup() {
         myClient = new Client(this, "127.0.0.1", 5204);
 
-        //p.id = "0";
-
-        commands.add(new RTCFunction("New", "-1", new GameObject[]{p}));
+        CallRTC("Instantiate", "-1", new GameObject[] {new Player(this)});
 
         try
         {
-            dataOut = objectMapper.writeValueAsString(commands);
-            myClient.write(dataOut);
-           // println(dataOut);
+            String out = objectMapper.writeValueAsString(commands);
+            myClient.write(out);
         }
         catch(Exception e){}
     }
@@ -60,43 +53,61 @@ public class ClientMain extends PApplet {
     public void draw() {
         commands.clear();
 
-        background(0);
+        super.Update();
 
-        rect(p.x, p.y, 50, 50);
 
-        commands.add(new RTCFunction("SetPosition", p.id, new GameObject[] {p}));
+        String out = "";
+
+
         try
         {
-            dataOut = objectMapper.writeValueAsString(commands);
+            out = objectMapper.writeValueAsString(commands);
         }
         catch(Exception e){}
 
-        text(dataOut, 200, 200);
+        text(out, 200, 200);
         textSize(30);
         fill(0, 255, 0);
 
-        if(myInput.w)
-        {
-            p.y -= 10;
-        }
-        if(myInput.a)
-        {
-            p.x -= 10;
-        }
-        if(myInput.s)
-        {
-            p.y += 10;
-        }
-        if(myInput.d)
-        {
-            p.x += 10;
-        }
-
         if(myInput.f)
         {
-            myClient.write(dataOut);
-            println(dataOut);
+            myClient.write(out);
+           println(out);
         }
+    }
+
+    public void CallRTC(String name, String id, GameObject[] args)
+    {
+        RTCFunction function = new RTCFunction(name, id, args);
+
+        if(function.objectID.equals("-1"))
+        {
+            Instantiate((GameObject) function.arguments[0]);
+            println("new player");
+        }
+        else
+        {
+            try {
+                CallByName(function);
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+        }
+        commands.add(function);
+    }
+
+    public void clientEvent(Client client)
+    {
+        /*String input = client.readString();
+        try
+        {
+            IncomingCommand(input);
+        }
+        catch (Exception e){
+            println("Outer" + e);
+        }*/
     }
 }
 
