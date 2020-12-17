@@ -10,9 +10,17 @@ import java.util.Set;
 
 public abstract class MainSuper extends PApplet
 {
+    protected final String ID_DIVIDER = ";";
+    protected final String FINAL_MESSAGE_CHARACTER = "]%";
+
     public Map<String, GameObject> gameObjects = new HashMap<String, GameObject>();
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    protected ObjectMapper objectMapper = new ObjectMapper();
+    protected String input = "";
+
+    public void Init()
+    {
+    }
 
     public void Update()
     {
@@ -25,15 +33,14 @@ public abstract class MainSuper extends PApplet
             e.getValue().Update();
         }
     }
-    public void IncomingCommand(String input) throws Exception
+    public void IncomingCommand() throws Exception
     {
         List<RTCFunction> commands = objectMapper.readValue(input, new TypeReference<>() {});
-
 
         for (RTCFunction function : commands) {
             if(function.objectID.equals("-1"))
             {
-                Instantiate((GameObject) function.arguments[0]);
+                Instantiate(function.instantiate);
             }
             else {
                 try {
@@ -81,6 +88,10 @@ public abstract class MainSuper extends PApplet
         method.invoke(obj, arguments);
     }
 
+    public boolean CompleteInput()
+    {
+        return input.endsWith(FINAL_MESSAGE_CHARACTER);
+    }
 
     public void Instantiate(GameObject object)
     {

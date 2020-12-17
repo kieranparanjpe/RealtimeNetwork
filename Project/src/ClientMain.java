@@ -16,8 +16,6 @@ public class ClientMain extends MainSuper {
     private Client myClient;
     public Input myInput = new Input();
 
-    private ObjectMapper objectMapper = new ObjectMapper();
-
     public String id;
 
     public static void main(String args[]) {
@@ -30,38 +28,26 @@ public class ClientMain extends MainSuper {
     }
 
     public void setup() {
-        id = UUID.randomUUID().toString() + ";";
+        id = UUID.randomUUID().toString() + ID_DIVIDER;
+
+        super.Init();
 
         myClient = new Client(this, "127.0.0.1", 5204);
 
-        CallRTC("Instantiate", "-1", new GameObject[] {new Player(this)});
+        InstantiateRTC(new Player(this));
 
         try
         {
             String out = objectMapper.writeValueAsString(commands);
-            myClient.write(id + out);
+            myClient.write(id + out + FINAL_MESSAGE_CHARACTER.charAt(1));
         }
         catch(Exception e){}
     }
 
-    public void keyPressed()
-    {
-        myInput.keyPressed(key);
-    }
-
-    public void keyReleased()
-    {
-        myInput.keyReleased(key);
-    }
-
     public void draw() {
         commands.clear();
-
         super.Update();
-
-
         String out = "";
-
 
         try
         {
@@ -75,50 +61,67 @@ public class ClientMain extends MainSuper {
 
         if(myInput.f)
         {
-            myClient.write(id + out);
-           println(out);
+            myClient.write(id + out + FINAL_MESSAGE_CHARACTER.charAt(1));
         }
-    }
-
-    public void CallRTC(String name, String id, GameObject[] args)
-    {
-        RTCFunction function = new RTCFunction(name, id, args);
-
-        if(function.objectID.equals("-1"))
-        {
-            Instantiate((GameObject) function.arguments[0]);
-            println("new player");
-        }
-        else
-        {
-            try {
-                CallByName(function);
-            }
-            catch (Exception e)
-            {
-                return;
-            }
-        }
-        commands.add(function);
     }
 
     public void clientEvent(Client client)
     {
-        String input = client.readString();
+        input = client.readString();
 
-        String[] in = input.split(";", 2);
+        if(!CompleteInput())
+            return;
 
-        in[0] = in[0] + ";";
+        String[] in = input.split(ID_DIVIDER, 2);
+
+        in[0] = in[0] + ID_DIVIDER;
         if(in[0].equals(id))
             return;
 
         try
         {
-            IncomingCommand(in[1]);
+            input = in[1].substring(0, in[1].length() - 1);
+            IncomingCommand();
+            input = "";
         }
         catch (Exception e){
+            input = "";
             println("Outer" + e);
         }
+    }
+
+    public void CallRTC(String name, String id, Object[] args)
+    {
+        RTCFunction function = new RTCFunction(name, id, args);
+        try {
+            CallByName(function);
+        }
+        catch (Exception e)
+        {
+            return;
+        }
+
+        commands.add(function);
+    }
+
+    public void InstantiateRTC(GameObject obj)
+    {
+        RTCFunction function = new RTCFunction("Instantiate", "-1", obj);
+
+        Instantiate(obj);
+        println("new player");
+        commands.add(function);
+
+    }
+
+    public void keyPressed()
+    {
+        myInput.keyPressed(key);
+    }
+
+    public void keyReleased()
+    {
+        myInput.keyReleased(key);
     }
 }
 

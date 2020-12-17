@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.*;
 @JsonTypeName("Player")
 public class Player extends GameObject
 {
-    public int x;
-    public int y;
+    public Integer x = 0;
+    public Integer y = 0;
 
     Input myInput = new Input();
 
@@ -54,13 +54,13 @@ public class Player extends GameObject
 
         if(sketch.getClass() == ClientMain.class)
         {
-            ((ClientMain)sketch).CallRTC("SetPosition", id, new GameObject[] {this});
+            ((ClientMain)sketch).CallRTC("SetPosition", id, new Object[] {x, y});
         }
     }
 
-    public void SetPosition(Player p)
+    public void SetPosition(Integer x, Integer y)
     {
-        this.x = p.x;
-        this.y = p.y;
+        this.x = x;
+        this.y = y;
     }
 }

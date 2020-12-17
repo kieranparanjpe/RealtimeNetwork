@@ -20,7 +20,7 @@ public class Input
         {
             d = true;
         }
-        if(key == 'f' || key == 'F')
+        if(key == ' ' || key == ' ')
         {
             f = true;
         }
@@ -44,7 +44,7 @@ public class Input
         {
             d = false;
         }
-        if(key == 'f' || key == 'F')
+        if(key == ' ' || key == ' ')
         {
             f = false;
         }

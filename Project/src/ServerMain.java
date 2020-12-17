@@ -14,9 +14,6 @@ public class ServerMain extends MainSuper {
         PApplet.main(new String[] { ServerMain.class.getName() });
         PApplet.main(new String[] { ClientMain.class.getName() });
         PApplet.main(new String[] { ClientMain.class.getName() });
-        PApplet.main(new String[] { ClientMain.class.getName() });
-
-
     }
 
     public void settings() {
@@ -25,6 +22,8 @@ public class ServerMain extends MainSuper {
 
     public void setup()
     {
+        super.Init();
+
         // Starts a myServer on port 5204
         myServer = new Server(this, 5204);
     }
@@ -37,16 +36,23 @@ public class ServerMain extends MainSuper {
 
         if(client != null)
         {
-            String input = client.readString();
-            println(input);
-            String[] in = input.split(";", 2);
+            input += client.readString();
+
+            if(!CompleteInput())
+                return;
+
+            String[] in = input.split(ID_DIVIDER, 2);
 
             try
             {
-                IncomingCommand(in[1]);
                 myServer.write(input);
+                input = in[1].substring(0, in[1].length() - 1);
+                println(input);
+                IncomingCommand();
+                input = "";
             }
             catch (Exception e){
+                input = "";
                 println("Outer" + e);
             }
         }
