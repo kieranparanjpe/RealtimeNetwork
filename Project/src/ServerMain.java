@@ -14,6 +14,7 @@ public class ServerMain extends MainSuper {
         PApplet.main(new String[] { ServerMain.class.getName() });
         PApplet.main(new String[] { ClientMain.class.getName() });
         PApplet.main(new String[] { ClientMain.class.getName() });
+        PApplet.main(new String[] { ClientMain.class.getName() });
 
 
     }
@@ -37,9 +38,12 @@ public class ServerMain extends MainSuper {
         if(client != null)
         {
             String input = client.readString();
+            println(input);
+            String[] in = input.split(";", 2);
+
             try
             {
-                IncomingCommand(input);
+                IncomingCommand(in[1]);
                 myServer.write(input);
             }
             catch (Exception e){
@@ -50,7 +54,5 @@ public class ServerMain extends MainSuper {
         textSize(30);
         fill(0, 255, 0);
         text(gameObjects.size(), 200, 200);
-
-
     }
 }

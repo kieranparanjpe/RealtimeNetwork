@@ -4,6 +4,7 @@ import processing.core.*;
 import processing.net.*;
 import java.lang.reflect.*;
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 import com.fasterxml.jackson.databind.*;
@@ -17,6 +18,7 @@ public class ClientMain extends MainSuper {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    public String id;
 
     public static void main(String args[]) {
         PApplet.main(new String[] { ClientMain.class.getName() });
@@ -28,6 +30,8 @@ public class ClientMain extends MainSuper {
     }
 
     public void setup() {
+        id = UUID.randomUUID().toString() + ";";
+
         myClient = new Client(this, "127.0.0.1", 5204);
 
         CallRTC("Instantiate", "-1", new GameObject[] {new Player(this)});
@@ -35,7 +39,7 @@ public class ClientMain extends MainSuper {
         try
         {
             String out = objectMapper.writeValueAsString(commands);
-            myClient.write(out);
+            myClient.write(id + out);
         }
         catch(Exception e){}
     }
@@ -71,7 +75,7 @@ public class ClientMain extends MainSuper {
 
         if(myInput.f)
         {
-            myClient.write(out);
+            myClient.write(id + out);
            println(out);
         }
     }
@@ -100,14 +104,21 @@ public class ClientMain extends MainSuper {
 
     public void clientEvent(Client client)
     {
-        /*String input = client.readString();
+        String input = client.readString();
+
+        String[] in = input.split(";", 2);
+
+        in[0] = in[0] + ";";
+        if(in[0].equals(id))
+            return;
+
         try
         {
-            IncomingCommand(input);
+            IncomingCommand(in[1]);
         }
         catch (Exception e){
             println("Outer" + e);
-        }*/
+        }
     }
 }
 

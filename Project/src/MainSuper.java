@@ -36,7 +36,6 @@ public abstract class MainSuper extends PApplet
                 Instantiate((GameObject) function.arguments[0]);
             }
             else {
-
                 try {
                     CallByName(function);
                 } catch (Exception e) {
