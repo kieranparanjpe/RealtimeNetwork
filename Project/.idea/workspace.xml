@@ -3,15 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c2a32c78-3caf-4a19-bcc8-5f21c0b15298" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/ClientMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project/ClientMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/GameObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project/GameObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Project/ServerMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Project/ServerMain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Input.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MainSuper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainSuper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RTCFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RTCFunction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ServerMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerMain.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

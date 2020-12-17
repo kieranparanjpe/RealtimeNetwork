@@ -47,7 +47,6 @@ public class ServerMain extends MainSuper {
             {
                 myServer.write(input);
                 input = in[1].substring(0, in[1].length() - 1);
-                println(input);
                 IncomingCommand();
                 input = "";
             }
