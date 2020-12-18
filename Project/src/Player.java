@@ -13,9 +13,11 @@ public class Player extends GameObject
 
     public Player(MainSuper sketch)
     {
-        super.Init();
+        super();
 
         this.sketch = sketch;
+
+        isLocal = true;
 
         if(sketch.getClass() == ClientMain.class)
         {
@@ -25,7 +27,7 @@ public class Player extends GameObject
 
     public Player()
     {
-        super.Init();
+        super();
     }
 
     @Override
@@ -33,6 +35,8 @@ public class Player extends GameObject
     {
         sketch.fill(255);
         sketch.rect(x, y, 100, 100);
+
+        sketch.text(x + " : " + y, 100, 500);
 
         if(myInput.w)
         {

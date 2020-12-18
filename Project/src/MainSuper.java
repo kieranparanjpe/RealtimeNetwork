@@ -33,7 +33,7 @@ public abstract class MainSuper extends PApplet
             e.getValue().Update();
         }
     }
-    public void IncomingCommand() throws Exception
+    public List<RTCFunction> IncomingCommand() throws Exception
     {
         List<RTCFunction> commands = objectMapper.readValue(input, new TypeReference<>() {});
 
@@ -50,6 +50,8 @@ public abstract class MainSuper extends PApplet
                 }
             }
         }
+
+        return commands;
     }
 
     public void CallByName(RTCFunction function) throws Exception

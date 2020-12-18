@@ -13,9 +13,12 @@ public abstract class GameObject {
 
     public String id;
 
+    @JsonIgnore
+    public boolean isLocal = false;
+
     protected MainSuper sketch;
 
-    protected void Init()
+    protected GameObject()
     {
         id = UUID.randomUUID().toString();
     }

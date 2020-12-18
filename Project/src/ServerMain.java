@@ -10,6 +10,8 @@ public class ServerMain extends MainSuper {
     Server myServer;
     Client client;
 
+    private ArrayList<RTCFunction> functionHistory = new ArrayList<RTCFunction>();
+
     public static void main(String args[]) {
         PApplet.main(new String[] { ServerMain.class.getName() });
         PApplet.main(new String[] { ClientMain.class.getName() });
@@ -47,7 +49,12 @@ public class ServerMain extends MainSuper {
             {
                 myServer.write(input);
                 input = in[1].substring(0, in[1].length() - 1);
-                IncomingCommand();
+                List<RTCFunction> tempFunctions = IncomingCommand();
+
+                for(int i = 0; i < tempFunctions.size(); i++)
+                {
+                    functionHistory.add(tempFunctions.get(i));
+                }
                 input = "";
             }
             catch (Exception e){
@@ -59,5 +66,40 @@ public class ServerMain extends MainSuper {
         textSize(30);
         fill(0, 255, 0);
         text(gameObjects.size(), 200, 200);
+    }
+
+    public void serverEvent(Server server, Client client)
+    {
+        RTCFunction last = new RTCFunction("", "", new Object[]{});
+        int sameCounter = 0;
+        ArrayList<RTCFunction> temp = new ArrayList<RTCFunction>();
+        for(int i = functionHistory.size() - 1; i >= 0; i--)
+        {
+            println(functionHistory.get(i).functionName + " : Name i : " + i);
+            if(((functionHistory.get(i).objectID.equals(last.objectID) && functionHistory.get(i).functionName.equals(last.functionName) && sameCounter < 10) ||
+            functionHistory.get(i) == last) && !functionHistory.get(i).objectID.equals("-1"))
+            {
+                sameCounter++;
+                println("Remove: " + i);
+            }
+            else
+            {
+                temp.add(functionHistory.get(i));
+                sameCounter = 0;
+            }
+
+            last = functionHistory.get(i);
+        }
+
+        Collections.reverse(temp);
+        functionHistory = temp;
+
+        try
+        {
+            String out = objectMapper.writeValueAsString(functionHistory);
+            println(functionHistory.size() + out);
+            myServer.write("SERVER" + ID_DIVIDER + out + FINAL_MESSAGE_CHARACTER.charAt(1));
+        }
+        catch (Exception e){}
     }
 }

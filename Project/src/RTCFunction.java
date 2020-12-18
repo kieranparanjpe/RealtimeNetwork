@@ -1,8 +1,8 @@
 
 public class RTCFunction {
 
-    public String functionName;
-    public String objectID;
+    public String functionName = "";
+    public String objectID = "";
 
     public GameObject instantiate;
     public Object[] arguments;

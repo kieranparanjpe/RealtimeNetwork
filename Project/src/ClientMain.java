@@ -18,6 +18,8 @@ public class ClientMain extends MainSuper {
 
     public String id;
 
+    private boolean init = false;
+
     public static void main(String args[]) {
         PApplet.main(new String[] { ClientMain.class.getName() });
     }
@@ -53,7 +55,7 @@ public class ClientMain extends MainSuper {
         {
             out = objectMapper.writeValueAsString(commands);
         }
-        catch(Exception e){}
+        catch(Exception e){println(e);}
 
         text(out, 200, 200);
         textSize(30);
@@ -68,6 +70,10 @@ public class ClientMain extends MainSuper {
     public void clientEvent(Client client)
     {
         input = client.readString();
+
+        if(input.contains("SERVER") && init)
+            return;
+
 
         if(!CompleteInput())
             return;
@@ -88,6 +94,8 @@ public class ClientMain extends MainSuper {
             input = "";
             println("Outer" + e);
         }
+
+        init = true;
     }
 
     public void CallRTC(String name, String id, Object[] args)
